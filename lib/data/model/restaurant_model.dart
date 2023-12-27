@@ -7,15 +7,15 @@ String restaurantResultToJson(RestaurantResult data) =>
     json.encode(data.toJson());
 
 class RestaurantResult {
-  bool? error;
+  bool error;
   String? message;
-  int? count;
+  int count;
   List<Restaurant> restaurants;
 
   RestaurantResult({
-    this.error,
-    this.message,
-    this.count,
+    required this.error,
+    required this.message,
+    required this.count,
     required this.restaurants,
   });
 

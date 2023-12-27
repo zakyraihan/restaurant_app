@@ -111,7 +111,9 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RestaurantDetailPage(),
+                                  builder: (context) => RestaurantDetailPage(
+                                    restaurantId: restaurant.id,
+                                  ),
                                 ),
                               );
                             },
@@ -202,7 +204,13 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
               );
             } else if (state.state == ResultState.error) {
               return Center(
-                child: Text(state.message),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.error),
+                    Text(state.message),
+                  ],
+                ),
               );
             } else {
               return const Scaffold();

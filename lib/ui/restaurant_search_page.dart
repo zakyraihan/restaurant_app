@@ -64,7 +64,13 @@ class _SearchPageState extends State<SearchPage> {
               );
             case ResultState.error:
               return Center(
-                child: Text(searchProvider.message),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.error),
+                    Text(searchProvider.message),
+                  ],
+                ),
               );
             default:
               return const SizedBox.shrink();
@@ -92,7 +98,10 @@ class _SearchPageState extends State<SearchPage> {
         return GestureDetector(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => RestaurantDetailPage()),
+            MaterialPageRoute(
+                builder: (context) => RestaurantDetailPage(
+                      restaurantId: restaurant.id,
+                    )),
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

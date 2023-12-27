@@ -15,7 +15,6 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => SearchProvider(apiService: ApiService()),
         ),
-        
       ],
       child: const MyApp(),
     ),
