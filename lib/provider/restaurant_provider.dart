@@ -3,8 +3,6 @@ import 'package:restaurant_app_api/common/result_state.dart';
 import 'package:restaurant_app_api/data/api/restaurant_service.dart';
 import 'package:restaurant_app_api/data/model/restaurant_model.dart';
 
-
-
 class RestaurantProvider extends ChangeNotifier {
   final ApiService apiService;
   String query = '';

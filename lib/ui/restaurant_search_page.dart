@@ -93,8 +93,7 @@ class _SearchPageState extends State<SearchPage> {
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    RestaurantDetailPage(restaurantId: restaurant.id)),
+                builder: (context) => DetailPage(restaurantId: restaurant.id)),
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

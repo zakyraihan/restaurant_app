@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:restaurant_app_api/data/model/detail_model.dart';
 import 'package:restaurant_app_api/data/model/restaurant_model.dart';
 import 'package:restaurant_app_api/data/model/search_restaurant_model.dart';
 
@@ -16,7 +17,7 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> getRestaurantDetail(String restaurantId) async {
+  Future<RestaurantDetail> getRestaurantDetail(String restaurantId) async {
     final response =
         await http.get(Uri.parse('$_baseUrl/detail/$restaurantId'));
     if (response.statusCode == 200) {
