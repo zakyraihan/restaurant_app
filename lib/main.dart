@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app_api/data/api/restaurant_service.dart';
-import 'package:restaurant_app_api/provider/detail_provider.dart';
 import 'package:restaurant_app_api/provider/restaurant_provider.dart';
 import 'package:restaurant_app_api/provider/search_provider.dart';
 import 'package:restaurant_app_api/ui/restaurant_list_page.dart';
@@ -16,12 +15,7 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => SearchProvider(apiService: ApiService()),
         ),
-        ChangeNotifierProvider(
-          create: (context) => DetailProvider(
-            apiService: ApiService(),
-            restaurantId: null
-          ),
-        )
+        
       ],
       child: const MyApp(),
     ),

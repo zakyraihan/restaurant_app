@@ -5,7 +5,6 @@ import 'package:restaurant_app_api/common/result_state.dart';
 import 'package:restaurant_app_api/data/api/restaurant_service.dart';
 import 'package:restaurant_app_api/data/model/search_restaurant_model.dart';
 
-
 class SearchProvider extends ChangeNotifier {
   final ApiService apiService;
   String query = '';
@@ -38,7 +37,7 @@ class SearchProvider extends ChangeNotifier {
       }
     } catch (e) {
       _state = ResultState.error;
-      return _message = 'Error: $e';
+      return _message = 'Terjadi Kesalahan';
     } finally {
       notifyListeners();
     }

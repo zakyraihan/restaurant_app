@@ -92,8 +92,7 @@ class _SearchPageState extends State<SearchPage> {
         return GestureDetector(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => DetailPage(restaurantId: restaurant.id)),
+            MaterialPageRoute(builder: (context) => RestaurantDetailPage()),
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

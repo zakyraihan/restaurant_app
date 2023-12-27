@@ -111,9 +111,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DetailPage(
-                                    restaurantId: restaurant.id,
-                                  ),
+                                  builder: (context) => RestaurantDetailPage(),
                                 ),
                               );
                             },

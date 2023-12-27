@@ -1,45 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app_api/common/result_state.dart';
 import 'package:restaurant_app_api/data/api/restaurant_service.dart';
 import 'package:restaurant_app_api/data/model/detail_model.dart';
 
-enum DetailResultState { loading, noData, hasData, error }
-
-class DetailProvider extends ChangeNotifier {
+class RestaurantDetailProvider extends ChangeNotifier {
+  final Restaurants? restaurants;
   final ApiService apiService;
-  final String? restaurantId;
 
-  DetailProvider({required this.apiService, required this.restaurantId}) {
-    getDetailRestaurant();
+  RestaurantDetailProvider(
+      {required this.apiService, required this.restaurants}) {
+    _fetchAllRestaurantData();
   }
 
-  late RestaurantDetail _restaurantDetail;
-  late DetailResultState _state;
+  late RestaurantDetail _restaurantDetailResult;
+  late ResultState _state;
   String _message = '';
 
-  RestaurantDetail get restaurantDetail => _restaurantDetail;
   String get message => _message;
-  DetailResultState get state => _state;
 
-  Future<dynamic> getDetailRestaurant() async {
+  RestaurantDetail get result => _restaurantDetailResult;
+
+  ResultState get state => _state;
+
+  Future<dynamic> _fetchAllRestaurantData() async {
     try {
-      _state = DetailResultState.loading;
+      _state = ResultState.loading;
       notifyListeners();
-
-      final response = await apiService.getRestaurantDetail(restaurantId ?? '');
-
-      if (response.error) {
-        _state = DetailResultState.noData;
+      final restaurant = await apiService.getRestaurantDetail(restaurants!.id);
+      if (restaurant.restaurant.id.isEmpty) {
+        _state = ResultState.noData;
         notifyListeners();
-        return _message = 'no data';
+        return _message = 'Empty Data';
       } else {
-        _state = DetailResultState.hasData;
+        _state = ResultState.hasData;
         notifyListeners();
-        return _restaurantDetail = response;
+        return _restaurantDetailResult = restaurant;
       }
     } catch (e) {
-      _state = DetailResultState.error;
+      _state = ResultState.error;
       notifyListeners();
-      return _message = 'Error: $e';
+      return _message = 'Errorr --> $e';
     }
   }
 }

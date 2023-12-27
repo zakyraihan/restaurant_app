@@ -36,7 +36,7 @@ class RestaurantProvider extends ChangeNotifier {
     } catch (e) {
       _state = ResultState.error;
       notifyListeners();
-      return _message = 'Error -> $e';
+      return _message = 'Terjadi Kesalahan';
     }
   }
 }
