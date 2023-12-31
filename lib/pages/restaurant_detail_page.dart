@@ -190,29 +190,9 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
               ],
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              _postReview();
-            },
-            child: const Text('Post Review'),
-          ),
         ],
       ),
     );
-  }
-
-  void _postReview() {
-    final name = _nameController.text;
-    final reviewText = _reviewController.text;
-    final date = _dateController.text;
-
-    if (name.isNotEmpty && reviewText.isNotEmpty) {
-      final review = CustomerReview(name: name, review: reviewText, date: date);
-      ApiService().postReview(widget.restaurantId, review);
-    } else {
-      // Show an error message or handle empty fields
-      print('Name and review cannot be empty');
-    }
   }
 
   Widget _buildFoodCategories(List<Category> foodCategories) {

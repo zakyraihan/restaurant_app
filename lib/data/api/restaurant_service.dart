@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:restaurant_app_api/data/model/restaurant_detail_model.dart';
@@ -25,7 +24,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return restaurantDetailFromJson(response.body);
     } else {
-      throw Exception('Failed to load restaurant detail');
+      throw Exception('Failed to load restaeurant detail');
     }
   }
 
@@ -35,26 +34,6 @@ class ApiService {
       return RestaurantSearch.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed To Search Restaurant Data');
-    }
-  }
-
-  Future<void> postReview(String restaurantId, CustomerReview review) async {
-    final response = await http.post(
-      Uri.parse('$_baseUrl/review'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        "id": restaurantId,
-        "name": review.name,
-        'review': review.review,
-        'date': review.date,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      log('Review posted successfully');
-    } else {
-      log('Failed to post review. Status code: ${response.statusCode}');
-      log('Response body: ${response.body}');
     }
   }
 }

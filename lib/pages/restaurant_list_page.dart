@@ -5,9 +5,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app_api/common/result_state.dart';
 import 'package:restaurant_app_api/common/style.dart';
+import 'package:restaurant_app_api/pages/restaurant_detail_page.dart';
+import 'package:restaurant_app_api/pages/restaurant_search_page.dart';
 import 'package:restaurant_app_api/provider/restaurant_provider.dart';
-import 'package:restaurant_app_api/ui/restaurant_detail_page.dart';
-import 'package:restaurant_app_api/ui/restaurant_search_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantListPage extends StatefulWidget {
