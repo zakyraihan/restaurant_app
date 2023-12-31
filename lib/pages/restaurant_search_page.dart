@@ -8,6 +8,7 @@ import 'package:restaurant_app_api/pages/restaurant_detail_page.dart';
 import 'package:restaurant_app_api/provider/search_provider.dart';
 
 class SearchPage extends StatefulWidget {
+  static const String routeName = '/search_page';
   const SearchPage({Key? key}) : super(key: key);
 
   @override
@@ -96,13 +97,10 @@ class _SearchPageState extends State<SearchPage> {
       itemBuilder: (context, index) {
         var restaurant = searchResult.restaurants[index];
         return GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => RestaurantDetailPage(
-                      restaurantId: restaurant.id,
-                    )),
-          ),
+          onTap: () {
+            Navigator.pushNamed(context, RestaurantDetailPage.routeName,
+                arguments: restaurant.id);
+          },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(

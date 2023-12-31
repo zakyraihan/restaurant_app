@@ -9,9 +9,11 @@ import 'package:restaurant_app_api/data/model/restaurant_detail_model.dart';
 import 'package:restaurant_app_api/provider/restaurant_detail_provider.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
-  final String restaurantId;
+  static const String routeName = '/restaurant-detail';
 
-  const RestaurantDetailPage({Key? key, required this.restaurantId})
+  final String restaurant;
+
+  const RestaurantDetailPage({Key? key, required this.restaurant})
       : super(key: key);
 
   @override
@@ -19,16 +21,13 @@ class RestaurantDetailPage extends StatefulWidget {
 }
 
 class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
-  final _nameController = TextEditingController();
-  final _reviewController = TextEditingController();
-  final _dateController = TextEditingController();
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => DetailProvider(
         apiService: ApiService(),
-        restaurantId: widget.restaurantId,
+        restaurantId: widget.restaurant.toString(),
       ),
       child: Consumer<DetailProvider>(
         builder: (context, detailProvider, _) {
@@ -48,7 +47,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           'https://restaurant-api.dicoding.dev/images/medium/${restaurantDetail.restaurant.pictureId}',
                           fit: BoxFit.cover,
                         ),
-                        // title: Text(restaurantDetail.restaurant.name),
                         titlePadding:
                             const EdgeInsets.only(left: 16, bottom: 16),
                       ),
@@ -173,19 +171,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   ),
                 ),
                 const Gap(5),
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(hintText: 'Name'),
-                ),
-                TextField(
-                  controller: _reviewController,
-                  decoration: const InputDecoration(hintText: 'review'),
-                ),
-                TextField(
-                  controller: _dateController,
-                  decoration: const InputDecoration(hintText: 'date'),
-                ),
-                const Gap(5),
                 _costumerReview(restaurantDetail.restaurant.customerReviews)
               ],
             ),
@@ -203,7 +188,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: foodCategories
               .map((foodCategory) => Container(
+                    margin: const EdgeInsets.all(8),
                     padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(Radius.circular(100)),
+                    ),
                     child: Text(
                       foodCategory.name,
                       style: style(fs: 17),
@@ -223,7 +213,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: drinksCategories
               .map((foodCategory) => Container(
+                    margin: const EdgeInsets.all(8),
                     padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(Radius.circular(100)),
+                    ),
                     child: Text(
                       foodCategory.name,
                       style: style(fs: 17),

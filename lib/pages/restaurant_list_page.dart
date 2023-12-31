@@ -1,16 +1,17 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app_api/common/result_state.dart';
-import 'package:restaurant_app_api/common/style.dart';
-import 'package:restaurant_app_api/pages/restaurant_detail_page.dart';
 import 'package:restaurant_app_api/pages/restaurant_search_page.dart';
+import 'package:restaurant_app_api/pages/restaurant_settings_page.dart';
 import 'package:restaurant_app_api/provider/restaurant_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:restaurant_app_api/widget/home_list_card.dart';
 
 class RestaurantListPage extends StatefulWidget {
+  static const routeName = 'list_page';
   const RestaurantListPage({super.key});
 
   @override
@@ -19,18 +20,11 @@ class RestaurantListPage extends StatefulWidget {
 
 class _RestaurantListPageState extends State<RestaurantListPage> {
   bool isSearchActive = false;
-  final TextEditingController searchController = TextEditingController();
-
-  final Uri _url = Uri.parse('https://www.instagram.com/c.adnya/');
-
-  Future<void> _launchUrl() async {
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
-    }
-  }
+  bool isIos = Platform.isIOS;
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
     return Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -40,8 +34,11 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                 pinned: true,
                 actions: [
                   IconButton(
-                    onPressed: _launchUrl,
-                    icon: const Icon(Iconsax.instagram),
+                    onPressed: () =>
+                        navigator.pushNamed(SettingsPage.routeName),
+                    icon: isIos
+                        ? const Icon(CupertinoIcons.settings)
+                        : const Icon(Icons.settings),
                   )
                 ],
                 flexibleSpace: FlexibleSpaceBar(
@@ -89,114 +86,14 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
             );
           } else {
             if (state.state == ResultState.hasData) {
-              // tampilan ListTile di layar
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemCount: state.result.restaurants.length,
-                        itemBuilder: (context, index) {
-                          var restaurant = state.result.restaurants[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RestaurantDetailPage(
-                                    restaurantId: restaurant.id,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Card(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        'https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}',
-                                      ),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(5),
-                                    color: Colors.black.withOpacity(0.4),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          restaurant.name,
-                                          style: style(
-                                            fs: 18,
-                                            fw: FontWeight.w500,
-                                            color: white,
-                                          ),
-                                        ),
-                                        Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.location_on,
-                                                  size: 20,
-                                                  color: white,
-                                                ),
-                                                Text(
-                                                  restaurant.city,
-                                                  style: style(
-                                                    fs: 15,
-                                                    fw: FontWeight.w500,
-                                                    color: white,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                            const Gap(10),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.star,
-                                                  size: 20,
-                                                  color: yellow,
-                                                ),
-                                                Text(
-                                                  restaurant.rating.toString(),
-                                                  style: style(
-                                                    fs: 15,
-                                                    fw: FontWeight.w500,
-                                                    color: white,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemCount: state.result.restaurants.length,
+                itemBuilder: (context, index) {
+                  var restaurant = state.result.restaurants[index];
+                  return HomeListCard(restaurant: restaurant);
+                },
               );
             } else if (state.state == ResultState.noData) {
               return Center(
