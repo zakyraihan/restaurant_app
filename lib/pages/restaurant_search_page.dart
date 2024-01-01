@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app_api/common/result_state.dart';
 import 'package:restaurant_app_api/common/style.dart';
 import 'package:restaurant_app_api/data/model/search_restaurant_model.dart';
 import 'package:restaurant_app_api/pages/restaurant_detail_page.dart';
 import 'package:restaurant_app_api/provider/search_provider.dart';
+import 'package:restaurant_app_api/utils/result_state.dart';
 
 class SearchPage extends StatefulWidget {
   static const String routeName = '/search_page';

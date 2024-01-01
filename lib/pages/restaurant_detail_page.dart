@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app_api/common/result_state.dart';
 import 'package:restaurant_app_api/common/style.dart';
 import 'package:restaurant_app_api/data/api/restaurant_service.dart';
 import 'package:restaurant_app_api/data/model/restaurant_detail_model.dart';
 import 'package:restaurant_app_api/provider/restaurant_detail_provider.dart';
+import 'package:restaurant_app_api/utils/result_state.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
-  static const String routeName = '/restaurant-detail';
+  static const String routeName = '/restaurant_detail';
 
   final String restaurant;
 
@@ -41,7 +41,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   return [
                     SliverAppBar(
                       expandedHeight: 270,
-                      pinned: false,
+                      pinned: true,
                       flexibleSpace: FlexibleSpaceBar(
                         background: Image.network(
                           'https://restaurant-api.dicoding.dev/images/medium/${restaurantDetail.restaurant.pictureId}',

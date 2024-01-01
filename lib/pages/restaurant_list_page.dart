@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app_api/common/result_state.dart';
+import 'package:restaurant_app_api/pages/restaurant_favorite_page.dart';
 import 'package:restaurant_app_api/pages/restaurant_search_page.dart';
 import 'package:restaurant_app_api/pages/restaurant_settings_page.dart';
 import 'package:restaurant_app_api/provider/restaurant_provider.dart';
+import 'package:restaurant_app_api/utils/result_state.dart';
 import 'package:restaurant_app_api/widget/home_list_card.dart';
 
 class RestaurantListPage extends StatefulWidget {
@@ -26,48 +27,61 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
     return Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                expandedHeight: 200,
-                pinned: true,
-                actions: [
-                  IconButton(
-                    onPressed: () =>
-                        navigator.pushNamed(SettingsPage.routeName),
-                    icon: isIos
-                        ? const Icon(CupertinoIcons.settings)
-                        : const Icon(Icons.settings),
-                  )
-                ],
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Image.asset(
-                    'assets/Group 57.png',
-                    fit: BoxFit.cover,
-                  ),
-                  centerTitle: false,
-                  title: Text(
-                    'Restaurant App',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              expandedHeight: 200,
+              pinned: true,
+              actions: [
+                IconButton(
+                  onPressed: () => navigator.pushNamed(SettingsPage.routeName),
+                  icon: isIos
+                      ? const Icon(CupertinoIcons.settings)
+                      : const Icon(Icons.settings),
+                )
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                background: Image.asset(
+                  'assets/Group 57.png',
+                  fit: BoxFit.cover,
                 ),
+                centerTitle: false,
+                title: const Text(
+                  'Restaurant App',
+                ),
+                titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
               ),
-            ];
-          },
-          body: _buildList(context),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const SearchPage()),
+            ),
+          ];
+        },
+        body: _buildList(context),
+      ),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SearchPage()),
+              );
+            },
+            child: const Icon(Icons.search),
+            label: 'search',
           ),
-          child: const Icon(Icons.search),
-        ));
+          SpeedDialChild(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const RestaurantFavoritePage()),
+            ),
+            child: const Icon(Icons.favorite),
+            label: 'favorite',
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildList(BuildContext context) {

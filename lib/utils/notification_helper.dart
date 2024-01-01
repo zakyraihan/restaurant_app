@@ -1,8 +1,11 @@
-import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:restaurant_app_api/common/navigation.dart';
 import 'package:restaurant_app_api/data/model/restaurant_model.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -44,20 +47,43 @@ class NotificationHelper {
     });
   }
 
+  Future<String> _downloadAndSaveFile(String url, String fileName) async {
+    var directory = await getApplicationDocumentsDirectory();
+    var filePath = '${directory.path}/$fileName';
+    var response = await http.get(Uri.parse(url));
+    var file = File(filePath);
+    await file.writeAsBytes(response.bodyBytes);
+    return filePath;
+  }
+
   Future<void> showNotification(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
       RestaurantResult restaurant) async {
+    var largeIconPath = await _downloadAndSaveFile(
+        'http://via.placeholder.com/48x48', 'largeIcon');
+    var bigPicturePath = await _downloadAndSaveFile(
+        'http://via.placeholder.com/400x800', 'bigPicture');
     var channelId = "1";
     var channelName = "restaurant app 1";
     var channelDescription = "restaurant app";
 
+    var bigPictureStyleInformation = BigPictureStyleInformation(
+      FilePathAndroidBitmap(bigPicturePath),
+      largeIcon: FilePathAndroidBitmap(largeIconPath),
+      contentTitle: 'recommendation restaurant for you',
+      htmlFormatContentTitle: true,
+      htmlFormatSummaryText: true,
+    );
+
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        channelId, channelName,
-        channelDescription: channelDescription,
-        importance: Importance.max,
-        priority: Priority.high,
-        ticker: 'ticker',
-        styleInformation: const DefaultStyleInformation(true, true));
+      channelId,
+      channelName,
+      channelDescription: channelDescription,
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      styleInformation: bigPictureStyleInformation,
+    );
 
     var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
@@ -68,7 +94,7 @@ class NotificationHelper {
     _random = Random().nextInt(restaurant.restaurants.length);
     var restaurant0 = restaurant.restaurants[_random];
 
-    var titleNotification = "<b>Restaurant For You</b>";
+    var titleNotification = "Restaurant For You";
     var titleRestaurant = restaurant0.name;
 
     await flutterLocalNotificationsPlugin.show(
@@ -76,15 +102,13 @@ class NotificationHelper {
       titleNotification,
       titleRestaurant,
       platformChannelSpecifics,
-      payload: json.encode(restaurant.toJson()),
+      payload: restaurant0.id,
     );
   }
 
   void configureSelectNotificationSubject(String route, BuildContext context) {
     selectNotificationSubject.stream.listen((String payload) async {
-      var data = RestaurantResult.fromJson(json.decode(payload));
-      var restaurant = data.restaurants[0];
-      Navigator.pushNamed(context, route, arguments: restaurant);
+      Navigation.intentWithData(route, payload);
     });
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app_api/common/result_state.dart';
+import 'package:restaurant_app_api/utils/result_state.dart';
 import 'package:restaurant_app_api/data/api/restaurant_service.dart';
 import 'package:restaurant_app_api/data/model/restaurant_model.dart';
 
