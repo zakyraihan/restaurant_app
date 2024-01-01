@@ -33,14 +33,6 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
             SliverAppBar(
               expandedHeight: 200,
               pinned: true,
-              actions: [
-                IconButton(
-                  onPressed: () => navigator.pushNamed(SettingsPage.routeName),
-                  icon: isIos
-                      ? const Icon(CupertinoIcons.settings)
-                      : const Icon(Icons.settings),
-                )
-              ],
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.asset(
                   'assets/Group 57.png',
@@ -78,6 +70,13 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
             ),
             child: const Icon(Icons.favorite),
             label: 'favorite',
+          ),
+          SpeedDialChild(
+            onTap: () => navigator.pushNamed(SettingsPage.routeName),
+            child: isIos
+                ? const Icon(CupertinoIcons.settings)
+                : const Icon(Icons.settings),
+            label: 'settings',
           )
         ],
       ),
