@@ -98,8 +98,7 @@ class _MyAppState extends State<MyApp> {
               SettingsPage.routeName: (context) => const SettingsPage(),
               SearchPage.routeName: (context) => const SearchPage(),
               RestaurantDetailPage.routeName: (context) => RestaurantDetailPage(
-                  restaurant:
-                      ModalRoute.of(context)?.settings.arguments as String),
+                  restaurant: ModalRoute.of(context)?.settings.arguments as String),
             },
           );
         },
